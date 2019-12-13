@@ -9,7 +9,8 @@ const config = require('../../config/connection.json')["mongodb"][env];
 
 mongoose.connect(config.MONGO_URL, {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useUnifiedTopology: true
 });
 mongoose.Promise = global.Promise;
 

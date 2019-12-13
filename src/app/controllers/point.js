@@ -1,10 +1,10 @@
 const express = require('express');
 
-const Point = require('../model/point');
+const Point = require('../models/point');
 
 const router = express.Router();
 
-outer.get('/index/:id', async (req, res) => {
+router.get('/index/:id', async (req, res) => {
     try {
         const point = await Point.findOne({ "UserId": req.params.id });
         return res.send({ point });

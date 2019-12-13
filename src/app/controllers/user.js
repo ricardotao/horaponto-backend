@@ -14,7 +14,7 @@ router.get('/store', async (req, res) => {
     }
 });
 
-outer.get('/index/:id', async (req, res) => {
+router.get('/index/:id', async (req, res) => {
     try {
         const user = await User.findOne({ "_id": req.params.id });
         return res.send({ user });
