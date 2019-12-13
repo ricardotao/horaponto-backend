@@ -1,4 +1,5 @@
-const mongoose = require('../../database/conexao/mongodb');
+const mongoose = require('../../app/database/connection');
+
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({

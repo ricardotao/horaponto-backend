@@ -1,4 +1,4 @@
-const mongoose = require('../../database/conexao/mongodb');
+const mongoose = require('../../app/database/connection');
 
 const pointSchema = new mongoose.Schema({
     UserId:{
