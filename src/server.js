@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-const seeder = require('../src/seed/user');
+const seedUser = require('../src/seed/user');
 
 const app = express();
 const port = process.env.PORT || 3333;
@@ -17,6 +17,6 @@ app.use(cors());
 
 require('./app/controllers/index')(app);
 
-seeder.Seeder();
+seedUser.User();
 
 app.listen(port);
