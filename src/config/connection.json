@@ -1,0 +1,14 @@
+{
+    "mongodb":
+    {
+        "development": {
+            "MONGO_URL": "mongodb+srv://dbHoraPonto:<password>@cluster0-c714r.mongodb.net/test?retryWrites=true&w=majority"
+        },
+        "test": {
+            "MONGO_URL": "mongodb+srv://dbHoraPonto:<password>@cluster0-c714r.mongodb.net/test?retryWrites=true&w=majority"
+        },
+        "production": {
+            "MONGO_URL": "mongodb+srv://dbHoraPonto:<password>@cluster0-c714r.mongodb.net/test?retryWrites=true&w=majority"
+        }
+    }
+}
