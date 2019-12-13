@@ -1,6 +1,6 @@
 const express = require('express');
 
-const Point = require('../models/Point');
+const Point = require('../model/point');
 
 const router = express.Router();
 
