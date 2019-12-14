@@ -1,10 +1,10 @@
 const User = require(`../app/models/user`);
 
-module.exports.User = async () => {
+module.exports.UserSeed = async () => {
 
     try{
         if (!await User.findOne({ "Email": "master@administrador.com" })){
-            console.log('Add User Master');
+            console.info('Add User Master');
             await User.create({
                 "Name": "Master",
                 "Email": "master@administrador.com",
@@ -12,11 +12,10 @@ module.exports.User = async () => {
             });
         }
         else{
-            console.log("Master exists.");
+            console.info("Master exists.");
         }
     }
     catch (erro) {
         console.error(erro);
     }
-
 };

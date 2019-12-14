@@ -16,6 +16,6 @@ app.use(cors());
 
 require('./app/controllers/index')(app);
 
-seedUser.User();
+seedUser.UserSeed();
 
 app.listen(port);

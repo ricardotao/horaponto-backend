@@ -23,15 +23,10 @@ const userSchema = new mongoose.Schema({
     Avatar: {
         type: Buffer,
         required: false,
-    },
-    DataCriacao: {
-        type: Date,
-        required: true,
-        default: Date.now,
     }
 });
 
-userSchema.pre('save', async function(next){
+userSchema.pre('save', async function(next) {
     const hash = await bcrypt.hash(this.Password, 12);
     this.Password = hash;
     next();
