@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
         const _dateHour = new Date(Hour);
         
         let point = null;
-        if(await Point.findOne({ "UserId": UserId, "DateDay": dateFormat })){
+        if(await Point.findOne({ "UserId": UserId, "DateDay": dateFormat, "Type": Type })){
             await Point.updateOne(
                 { "UserId": UserId },
                 {
