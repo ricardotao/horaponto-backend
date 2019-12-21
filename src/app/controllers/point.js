@@ -13,10 +13,14 @@ router.get('/index/:id/:dn', async (req, res) => {
     const dateStart = new Date(year,month,day).setUTCHours(00); 
     const dateEnd = new Date(year,month,day).setUTCHours(23);
 
+    const _date = new Date(req.params.dn);
+    const dateFormat = _date.getUTCFullYear() +'-'+ (_date.getUTCMonth()+1) +'-'+_date.getUTCDate();
+
     try {    
         const query = await Point.find({ 
             "UserId": req.params.id, 
-            "DatePoint": { $gte : dateStart, $lte: dateEnd }
+            //"DatePoint": { $gte : dateStart, $lte: dateEnd }
+            "DateDay": dateFormat
         });
 
         const points = [];
