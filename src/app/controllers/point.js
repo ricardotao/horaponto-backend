@@ -12,7 +12,7 @@ router.get('/index/:id/:dn', async (req, res) => {
     try {    
         const query = await Point.find({ 
             "UserId": req.params.id, 
-            "DateDay": dateQuery
+            "DatePoint": dateQuery
         });
 
         const points = [];
