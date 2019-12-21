@@ -6,15 +6,15 @@ const router = express.Router();
 
 router.get('/index/:id/:dn', async (req, res) => {
     
-    const year = new Date(req.params.dn).getUTCFullYear();
-    const month = new Date(req.params.dn).getUTCMonth();
-    const day = new Date(req.params.dn).getUTCDate();
+    const year = new Date(req.params.dn).getFullYear();
+    const month = new Date(req.params.dn).getMonth();
+    const day = new Date(req.params.dn).getDate();
 
-    const dateStart = new Date(year,month,day).setUTCHours(00); 
-    const dateEnd = new Date(year,month,day).setUTCHours(23);
+    const dateStart = new Date(year,month,day).setHours(00); 
+    const dateEnd = new Date(year,month,day).setHours(23);
 
     const _date = new Date(req.params.dn);
-    const dateFormat = _date.getUTCFullYear() +'-'+ (_date.getUTCMonth()+1) +'-'+_date.getUTCDate();
+    const dateFormat = _date.getFullYear() +'-'+ (_date.getMonth()+1) +'-'+_date.getDate();
 
     try {    
         const query = await Point.find({ 
@@ -27,8 +27,8 @@ router.get('/index/:id/:dn', async (req, res) => {
         query.forEach((item) => (
             points.push({
                 point: item, 
-                hour: new Date(item.DatePoint).getUTCHours(), 
-                minute: new Date(item.DatePoint).getUTCMinutes()  
+                hour: new Date(item.DatePoint).getHours(), 
+                minute: new Date(item.DatePoint).getMinutes()  
             })));
 
         return res.send({ 
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
 
     try{
         const _date = new Date(Day);
-        const dateFormat = _date.getUTCFullYear() +'-'+ (_date.getUTCMonth()+1) +'-'+_date.getUTCDate();
+        const dateFormat = _date.getFullYear() +'-'+ (_date.getMonth()+1) +'-'+_date.getDate();
         const _dateHour = new Date(Hour);
         
         let point = null;
@@ -85,8 +85,8 @@ router.post('/', async (req, res) => {
         const points = [];
         points.push({
             point,
-            hour: _dateHour.getUTCHours(), 
-            minute: _dateHour.getUTCMinutes()
+            hour: _dateHour.getHours(), 
+            minute: _dateHour.getMinutes()
         });
         return res.send({ 
             points  
