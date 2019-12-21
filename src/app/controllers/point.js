@@ -4,9 +4,9 @@ const Point = require('../models/point');
 
 const router = express.Router();
 
-router.get('/index/:id', async (req, res) => {
+router.get('/index/:id/:day', async (req, res) => {
     try {
-        const point = await Point.findOne({ "UserId": req.params.id });
+        const point = await Point.findOne({ "UserId": req.params.id, "DateDay.day": req.param.day });
         return res.send({ point });
     }
     catch (erro) {
@@ -24,8 +24,11 @@ router.post('/', async (req, res) => {
     } = req.body;
 
     try{
+        const _date = new Date(Day);
+        const dateQuery = _date.getDate() +'/'+ _date.getMonth() +'/'+ _date.getFullYear();
+        
         const _Point = null;
-        if(await Point.findOne({ UserId, "DateDay": Day })){
+        if(await Point.findOne({ UserId, "DateDay": dateQuery })){
             _Point = await User.updateOne(
                 { "UserId": point.id, "DateDay": point.DateDay },
                 {
