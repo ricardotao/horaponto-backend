@@ -4,15 +4,31 @@ const Point = require('../models/point');
 
 const router = express.Router();
 
-router.get('/index/:id/:day', async (req, res) => {
-    try {
-        const point = await Point.find({ "UserId": req.params.id, "DateDay.day": req.param.day });
+router.get('/index/:id/:dn', async (req, res) => {
+    
+    const year = new Date(req.params.dn).getUTCFullYear();
+    const month = new Date(req.params.dn).getUTCMonth();
+    const day = new Date(req.params.dn).getUTCDate();
+
+    const dateStart = new Date(year,month,day).setUTCHours(00); 
+    const dateEnd = new Date(year,month,day).setUTCHours(23);
+
+    try {    
+        const query = await Point.find({ 
+            "UserId": req.params.id, 
+            "DatePoint": { $gte : dateStart, $lte: dateEnd }
+        });
+
+        const points = [];
+        query.forEach((item) => (
+            points.push({
+                point: item, 
+                hour: new Date(item.DatePoint).getUTCHours(), 
+                minute: new Date(item.DatePoint).getUTCMinutes()  
+            })));
+
         return res.send({ 
-            type: point.Type, 
-            dateday: point.DateDay, 
-            datepoint: point.DatePoint, 
-            hour: new Date(point.DatePoint).getUTCHours(), 
-            minute: new Date(point.DatePoint).getUTCMinutes() 
+            points
         });
     }
     catch (erro) {
