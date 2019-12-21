@@ -6,11 +6,11 @@ const pointSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    DateDay: {
+    DatePoint: {
         type: Date,
         required: true
     },
-    DatePoint: {
+    DateHourPoint: {
         type: Date,
         required: true
     },
