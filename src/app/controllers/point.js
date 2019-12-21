@@ -6,8 +6,14 @@ const router = express.Router();
 
 router.get('/index/:id/:day', async (req, res) => {
     try {
-        const point = await Point.findOne({ "UserId": req.params.id, "DateDay.day": req.param.day });
-        return res.send({ point });
+        const point = await Point.find({ "UserId": req.params.id, "DateDay.day": req.param.day });
+        return res.send({ 
+            type: point.Type, 
+            dateday: point.DateDay, 
+            datepoint: point.DatePoint, 
+            hour: new Date(point.DatePoint).getUTCHours(), 
+            minute: new Date(point.DatePoint).getUTCMinutes() 
+        });
     }
     catch (erro) {
         return res.status(400).send({ error: 'Get Index Point: ' + erro });
