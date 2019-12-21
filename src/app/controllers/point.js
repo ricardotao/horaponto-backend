@@ -47,12 +47,13 @@ router.post('/', async (req, res) => {
 
     try{
         const _date = new Date(Day);
-        const dateQuery = _date.getDate() +'/'+ _date.getMonth() +'/'+ _date.getFullYear();
+        const dateFormat = _date.getUTCFullYear() +'-'+ (_date.getUTCMonth()+1) +'-'+_date.getUTCDate();
+        const _dateHour = new Date(Hour);
         
-        const _Point = null;
-        if(await Point.findOne({ UserId, "DateDay": dateQuery })){
-            _Point = await User.updateOne(
-                { "UserId": point.id, "DateDay": point.DateDay },
+        let point = null;
+        if(await Point.findOne({ "UserId": UserId, "DateDay": dateFormat })){
+            await Point.updateOne(
+                { "UserId": UserId },
                 {
                     '$set':{
                         "DatePoint": Hour,
@@ -61,17 +62,31 @@ router.post('/', async (req, res) => {
                 },
                 { upsert: true }
             );
+            point = {
+                "UserId": UserId,
+                "DateDay": _date,
+                "DatePoint": Hour,
+                "Type": Type
+            };
         }
         else{
-            _Point = await Point.create({
+            point = await Point.create({
                 "UserId": UserId,
-                "DateDay": Day,
+                "DateDay": dateFormat,
                 "DatePoint": Hour,
                 "Type": Type
             });
-        }
-
-        return res.send({ _Point });
+        }   
+        
+        const points = [];
+        points.push({
+            point,
+            hour: _dateHour.getUTCHours(), 
+            minute: _dateHour.getUTCMinutes()
+        });
+        return res.send({ 
+            points  
+         });
     }
     catch(erro){
         return res.status(400).send({ error: 'Update Point: ' + erro });
