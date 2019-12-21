@@ -19,8 +19,8 @@ router.get('/index/:id/:dn', async (req, res) => {
         query.forEach((item) => (
             points.push({
                 point: item, 
-                hour: new Date(item.DatePoint).getUTCHours(), 
-                minute: new Date(item.DatePoint).getUTCMinutes()  
+                hour: new Date(item.DateHourPoint).getUTCHours(), 
+                minute: new Date(item.DateHourPoint).getUTCMinutes()  
             })));
 
         return res.send({ 
