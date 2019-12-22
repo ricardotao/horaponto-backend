@@ -7,7 +7,9 @@ const router = express.Router();
 router.get('/index/:id/:dn', async (req, res) => {
 
     const datePoint = new Date(req.params.dn);
-    const dateQuery = datePoint.getFullYear() +'-'+ (datePoint.getMonth()+1) +'-'+datePoint.getDate();
+    console.log("datePoint: ", datePoint);
+    const dateQuery = datePoint.getFullYear() +'-'+ (datePoint.getMonth()+1) +'-'+datePoint.getUTCDate();
+    console.log("dataQuery: ", dateQuery);
 
     try {    
         const query = await Point.find({ 
@@ -19,8 +21,8 @@ router.get('/index/:id/:dn', async (req, res) => {
         query.forEach((item) => (
             points.push({
                 point: item, 
-                hour: new Date(item.DateHourPoint).getHours(), 
-                minute: new Date(item.DateHourPoint).getMinutes()  
+                hour: new Date(item.DateHourPoint).getUTCHours(), 
+                minute: new Date(item.DateHourPoint).getUTCMinutes()  
             })));
 
         return res.send({ 
@@ -43,16 +45,17 @@ router.post('/', async (req, res) => {
 
     try{
         const datePoint = new Date(Day);
-        console.log(datePoint);
-        const dateQuery = datePoint.getFullYear() +'-'+ (datePoint.getMonth()+1) +'-'+datePoint.getDate();
-        console.log("dateQuery: " + dateQuery);
+        console.log("datePoint: ", datePoint);
+        const dateQuery = datePoint.getFullYear() +'-'+ (datePoint.getMonth()+1) +'-'+datePoint.getUTCDate();
+        console.log("dateQuery: ", dateQuery);
         const dateHourPoint = new Date(Hour);
-        console.log(dateHourPoint);
+        console.log("dateHourPoint: ", dateHourPoint);
         
         let point = null;
-        if(await Point.findOne({ "UserId": UserId, "DatePoint": dateQuery, "Type": Type })){
+        const findPoint = await Point.findOne({ "UserId": UserId, "DatePoint": dateQuery, "Type": Type });
+        if(findPoint){
             await Point.updateOne(
-                { "UserId": UserId },
+                { "_id": findPoint.id },
                 {
                     '$set':{
                         "DateHourPoint": dateHourPoint,
@@ -80,8 +83,8 @@ router.post('/', async (req, res) => {
         const points = [];
         points.push({
             point,
-            hour: dateHourPoint.getHours(), 
-            minute: dateHourPoint.getMinutes()
+            hour: dateHourPoint.getUTCHours(), 
+            minute: dateHourPoint.getUTCMinutes()
         });
         return res.send({ 
             points  
