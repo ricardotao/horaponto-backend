@@ -63,8 +63,8 @@ router.post('/', async (req, res) => {
             );
             point = {
                 "UserId": UserId,
-                "DateDay": datePoint,
-                "DatePoint": dateHourPoint,
+                "DatePoint": datePoint,
+                "DateHourPoint": dateHourPoint,
                 "Type": Type
             };
         }
