@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
 
@@ -56,8 +57,6 @@ router.put('/:id', async (req, res) => {
 
     const {
         Name,
-        Email,
-        Password,
         Avatar,
     } = req.body;
 
@@ -77,6 +76,9 @@ router.put('/:id', async (req, res) => {
             },
             { upsert: true }
         );
+            
+            user.Name = Name;
+            user.Avatar = Avatar;
 
         return res.send({ user });
     }
@@ -85,12 +87,35 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.put('/ChangePassword/:id', async (req, res) => {
+router.post('/authentication', async (req, res) => {
+    const {
+        Email,
+        Password
+    } = req.body;
+
+    try {
+        const user = await User.findOne({ Email }).select('+Password');
+
+        if(!user)
+            return res.status(400).send({error: 'User not found.'});
+
+        if(await !bcrypt.compareSync(Password, user.Password))
+            return res.status(400).send({error: 'User or Password incorrect.'});
+
+        user.Password = null;
+
+        return res.send({ user });
+    }
+    catch (erro) {
+        return res.status(400).send({ error: 'Authentication: ' + erro });
+    }
+});
+
+router.post('/changePassword/:id', async (req, res) => {
 
     const {
         Password
     } = req.body;
-
 
     try {
         const user = await User.findOne({ "_id": req.params.id });
@@ -98,16 +123,18 @@ router.put('/ChangePassword/:id', async (req, res) => {
         if (!user)
             return res.status(400).send({ error: 'User not found.' });
 
+        const hash = await bcrypt.hash(Password, 12) 
         await User.updateOne(
             { "_id": user.id },
             {
                 '$set': {
-                    "Password": Password,
+                    "Password": hash,
                 }
             },
             { new: true, upsert: true }
         );
 
+        user.Password = undefined;
         return res.send({ user });
     }
     catch (erro) {
