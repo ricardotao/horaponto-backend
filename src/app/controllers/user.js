@@ -142,4 +142,24 @@ router.post('/changePassword/:id', async (req, res) => {
     }
 });
 
+
+router.post('/forgotPassword', async (req, res) => {
+
+    const {
+        Email
+    } = req.body;
+
+    try {
+        const user = await User.findOne({ "Email": Email });
+
+        if (!user)
+            return res.status(400).send({ error: 'User not found.' });
+
+        return res.send({ user });
+    }
+    catch (erro) {
+        return res.status(400).send({ error: 'Forgot Password: ' + erro });
+    }
+});
+
 module.exports = app => app.use('/User', router);
