@@ -134,7 +134,6 @@ router.post('/changePassword/:id', async (req, res) => {
             { new: true, upsert: true }
         );
 
-        user.Password = undefined;
         return res.send({ user });
     }
     catch (erro) {
@@ -146,7 +145,8 @@ router.post('/changePassword/:id', async (req, res) => {
 router.post('/forgotPassword', async (req, res) => {
 
     const {
-        Email
+        Email,
+        Password
     } = req.body;
 
     try {
@@ -154,6 +154,17 @@ router.post('/forgotPassword', async (req, res) => {
 
         if (!user)
             return res.status(400).send({ error: 'User not found.' });
+
+        const hash = await bcrypt.hash(Password, 12) 
+        await User.updateOne(
+            { "_id": user.id },
+            {
+                '$set': {
+                    "Password": hash,
+                }
+            },
+            { new: true, upsert: true }
+        );
 
         return res.send({ user });
     }
