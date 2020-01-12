@@ -48,7 +48,8 @@ router.post('/', async (req, res) => {
         console.log("datePoint: ", datePoint);
         const dateQuery = datePoint.getFullYear() +'-'+ (datePoint.getMonth()+1) +'-'+datePoint.getUTCDate();
         console.log("dateQuery: ", dateQuery);
-        const dateHourPoint = new Date(Hour);
+        //const dateHourPoint = new Date(Hour);
+        const dateHourPoint = new Date();
         console.log("dateHourPoint: ", dateHourPoint);
         
         let point = null;
